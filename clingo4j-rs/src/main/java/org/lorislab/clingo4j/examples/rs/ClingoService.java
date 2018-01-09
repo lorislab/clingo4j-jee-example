@@ -15,6 +15,7 @@
  */
 package org.lorislab.clingo4j.examples.rs;
 
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
@@ -39,11 +40,14 @@ import org.lorislab.clingo4j.api.Symbol;
 @Path("service")
 public class ClingoService {
 
+    private static final Logger LOGGER = Logger.getLogger(ClingoService.class.getName());
+    
     @POST
     @Path("solve")
     @Consumes(MediaType.WILDCARD)
     @Produces(MediaType.APPLICATION_JSON)
     public JsonObject solve(String program) {
+        LOGGER.info("clingo service solve start");
         JsonObjectBuilder b = Json.createObjectBuilder();
         
         Clingo.init();
@@ -79,6 +83,7 @@ public class ClingoService {
             throw new RuntimeException(ex.getMessage());
         }
 
+        LOGGER.info("clingo service finshed");
         return b.build();
     }
 }
